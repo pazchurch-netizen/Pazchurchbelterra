@@ -23,6 +23,7 @@
     <style type="text/tailwindcss">
         .sombra { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
         .botao { @apply bg-principal hover:bg-escuro text-branco px-4 py-2 rounded transition; }
+        .botao-vermelho { @apply bg-red-600 hover:bg-red-700 text-branco px-3 py-1 rounded text-sm; }
         .logo { height: 36px; width: auto; }
     </style>
 </head>
@@ -33,7 +34,7 @@
     <h2 class="text-xl font-bold text-principal mb-4">Acesso ao Painel</h2>
     <input type="password" id="senhaAdmin" placeholder="Digite a senha" class="w-full border rounded p-2 mb-3" required>
     <button onclick="verificarSenha()" class="botao w-full">Entrar</button>
-    <p class="text-xs text-center mt-3 text-gray-500">Senha padrão: paz2026</p>
+    <p class="text-xs text-center mt-3 text-gray-500">Bem Vindo</p>
 </div>
 
 <div id="painelPrincipal" class="hidden container mx-auto p-4 mt-6">
@@ -48,7 +49,7 @@
         </div>
     </header>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <div class="bg-branco p-5 rounded-lg sombra">
             <h3 class="text-lg font-semibold text-principal mb-4 border-b pb-2">Cadastrar Notícia</h3>
             <form id="formNoticia" class="space-y-3">
@@ -95,51 +96,169 @@
                 <button type="submit" class="botao w-full">Salvar Imagem</button>
             </form>
         </div>
+
+        <!-- NOVO: Cadastro de Vídeos -->
+        <div class="bg-branco p-5 rounded-lg sombra">
+            <h3 class="text-lg font-semibold text-principal mb-4 border-b pb-2">Adicionar Vídeo</h3>
+            <form id="formVideo" class="space-y-3">
+                <input type="text" placeholder="Título do vídeo" id="tituloVideo" class="w-full border rounded p-2" required>
+                <div>
+                    <label class="text-sm text-gray-600 mb-1 block">Tipo de vídeo:</label>
+                    <select id="tipoVideo" class="w-full border rounded p-2">
+                        <option value="youtube">Link do YouTube</option>
+                        <option value="arquivo">Arquivo de vídeo próprio</option>
+                    </select>
+                </div>
+                <div id="campoLink">
+                    <input type="url" placeholder="Link do YouTube" id="linkVideo" class="w-full border rounded p-2">
+                </div>
+                <div id="campoArquivo" class="hidden">
+                    <input type="file" accept="video/*" id="arquivoVideo" class="w-full text-sm">
+                </div>
+                <button type="submit" class="botao w-full">Salvar Vídeo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOVO: Mensagens Recebidas -->
+    <div class="bg-branco p-5 rounded-lg sombra mb-8">
+        <h3 class="text-lg font-semibold text-principal mb-4 border-b pb-2">Mensagens Recebidas</h3>
+        <div id="listaMensagens">
+            <p class="text-gray-500 text-center py-4">Nenhuma mensagem recebida até o momento.</p>
+        </div>
+    </div>
+
+    <!-- Lista de Vídeos Cadastrados -->
+    <div class="bg-branco p-5 rounded-lg sombra">
+        <h3 class="text-lg font-semibold text-principal mb-4 border-b pb-2">Vídeos Cadastrados</h3>
+        <div id="listaVideos">
+            <p class="text-gray-500 text-center py-4">Nenhum vídeo cadastrado.</p>
+        </div>
     </div>
 </div>
 
 <script>
-const SENHA_CORRETA = "paz2026";
+const SENHA_CORRETA = "pazchurch2026";
+
 function verificarSenha() {
     const senha = document.getElementById('senhaAdmin').value;
     if (senha === SENHA_CORRETA) {
         document.getElementById('telaLogin').classList.add('hidden');
         document.getElementById('painelPrincipal').classList.remove('hidden');
+        carregarConteudoAdmin();
     } else alert('Senha incorreta!');
 }
+
 function sair() {
     document.getElementById('painelPrincipal').classList.add('hidden');
     document.getElementById('telaLogin').classList.remove('hidden');
     document.getElementById('senhaAdmin').value = '';
 }
+
 function lerImagem(arquivo, callback) {
     const leitor = new FileReader();
     leitor.onload = e => callback(e.target.result);
     leitor.readAsDataURL(arquivo);
 }
+
+function carregarConteudoAdmin() {
+    // Carregar mensagens
+    const mensagens = JSON.parse(localStorage.getItem('mensagensRecebidas')) || [];
+    document.getElementById('listaMensagens').innerHTML = mensagens.length ?
+        mensagens.map(m => `
+            <div class="border-b pb-3 mb-3">
+                <p><strong>Nome:</strong> ${m.nome}</p>
+                <p><strong>Contato:</strong> ${m.email} | ${m.telefone || 'Não informado'}</p>
+                <p><strong>Data:</strong> ${m.data}</p>
+                <p class="mt-2"><strong>Mensagem:</strong><br>${m.texto}</p>
+                <button onclick="apagarItem('mensagensRecebidas', ${m.id})" class="botao-vermelho mt-2">Apagar</button>
+            </div>
+        `).join('') : '<p class="text-gray-500 text-center py-4">Nenhuma mensagem recebida.</p>';
+
+    // Carregar vídeos
+    const videos = JSON.parse(localStorage.getItem('videos')) || [];
+    document.getElementById('listaVideos').innerHTML = videos.length ?
+        videos.map(v => `
+            <div class="border-b pb-3 mb-3 flex justify-between items-center">
+                <div>
+                    <strong>${v.titulo}</strong><br>
+                    <span class="text-sm text-gray-600">Tipo: ${v.tipo === 'youtube' ? 'YouTube' : 'Arquivo próprio'}</span>
+                </div>
+                <button onclick="apagarItem('videos', ${v.id})" class="botao-vermelho">Apagar</button>
+            </div>
+        `).join('') : '<p class="text-gray-500 text-center py-4">Nenhum vídeo cadastrado.</p>';
+}
+
+function apagarItem(chave, id) {
+    const lista = JSON.parse(localStorage.getItem(chave)) || [];
+    const novaLista = lista.filter(item => item.id !== id);
+    localStorage.setItem(chave, JSON.stringify(novaLista));
+    carregarConteudoAdmin();
+    alert('Item removido com sucesso!');
+}
+
+// Alternar campos do vídeo
+document.getElementById('tipoVideo').addEventListener('change', () => {
+    const tipo = document.getElementById('tipoVideo').value;
+    document.getElementById('campoLink').classList.toggle('hidden', tipo !== 'youtube');
+    document.getElementById('campoArquivo').classList.toggle('hidden', tipo !== 'arquivo');
+});
+
+// Salvar vídeo
+document.getElementById('formVideo').addEventListener('submit', e => {
+    e.preventDefault();
+    const tipo = document.getElementById('tipoVideo').value;
+    const titulo = document.getElementById('tituloVideo').value;
+    const videos = JSON.parse(localStorage.getItem('videos')) || [];
+
+    if (tipo === 'youtube') {
+        const url = document.getElementById('linkVideo').value;
+        if (!url) return alert('Insira o link do YouTube!');
+        videos.unshift({ id: Date.now(), titulo, tipo, url });
+        localStorage.setItem('videos', JSON.stringify(videos));
+        alert('Vídeo do YouTube cadastrado!');
+        e.target.reset();
+        carregarConteudoAdmin();
+    } else {
+        const arquivo = document.getElementById('arquivoVideo').files[0];
+        if (!arquivo) return alert('Selecione o arquivo de vídeo!');
+        lerImagem(arquivo, (url) => {
+            videos.unshift({ id: Date.now(), titulo, tipo, arquivo: url });
+            localStorage.setItem('videos', JSON.stringify(videos));
+            alert('Vídeo cadastrado!');
+            e.target.reset();
+            carregarConteudoAdmin();
+        });
+    }
+});
+
+// Outros formulários mantidos
 document.getElementById('formNoticia').addEventListener('submit', e => {
     e.preventDefault();
-    const dados = { titulo:document.getElementById('tituloNoticia').value, data:document.getElementById('dataNoticia').value, conteudo:document.getElementById('conteudoNoticia').value };
+    const dados = { id: Date.now(), titulo: document.getElementById('tituloNoticia').value, data: document.getElementById('dataNoticia').value, conteudo: document.getElementById('conteudoNoticia').value };
     const arq = document.getElementById('imgNoticia').files[0];
     const salvar = () => { const l = JSON.parse(localStorage.getItem('noticias'))||[]; l.unshift(dados); localStorage.setItem('noticias',JSON.stringify(l)); alert('Salvo!'); e.target.reset(); };
     arq ? lerImagem(arq, u=>{dados.imagem=u;salvar()}) : salvar();
 });
+
 document.getElementById('formEvento').addEventListener('submit', e => {
     e.preventDefault();
-    const dados = { nome:document.getElementById('nomeEvento').value, data:document.getElementById('dataEvento').value, hora:document.getElementById('horaEvento').value, local:document.getElementById('localEvento').value, descricao:document.getElementById('descEvento').value };
+    const dados = { id: Date.now(), nome: document.getElementById('nomeEvento').value, data: document.getElementById('dataEvento').value, hora: document.getElementById('horaEvento').value, local: document.getElementById('localEvento').value, descricao: document.getElementById('descEvento').value };
     const arq = document.getElementById('imgEvento').files[0];
     const salvar = () => { const l = JSON.parse(localStorage.getItem('eventos'))||[]; l.unshift(dados); localStorage.setItem('eventos',JSON.stringify(l)); alert('Salvo!'); e.target.reset(); };
     arq ? lerImagem(arq, u=>{dados.imagem=u;salvar()}) : salvar();
 });
+
 document.getElementById('formCelula').addEventListener('submit', e => {
     e.preventDefault();
-    const dados = { nome:document.getElementById('nomeCelula').value, bairro:document.getElementById('bairroCelula').value, endereco:document.getElementById('enderecoCelula').value, responsavel:document.getElementById('respCelula').value, dia:document.getElementById('diaCelula').value, horario:document.getElementById('horaCelula').value, contato:document.getElementById('contatoCelula').value };
+    const dados = { id: Date.now(), nome: document.getElementById('nomeCelula').value, bairro: document.getElementById('bairroCelula').value, endereco: document.getElementById('enderecoCelula').value, responsavel: document.getElementById('respCelula').value, dia: document.getElementById('diaCelula').value, horario: document.getElementById('horaCelula').value, contato: document.getElementById('contatoCelula').value };
     const l = JSON.parse(localStorage.getItem('celulas'))||[]; l.push(dados); localStorage.setItem('celulas',JSON.stringify(l)); alert('Salvo!'); e.target.reset();
 });
+
 document.getElementById('formGaleria').addEventListener('submit', e => {
     e.preventDefault();
     const arq = document.getElementById('imgGaleria').files[0], leg = document.getElementById('legendaImg').value;
-    lerImagem(arq, u=>{ const l = JSON.parse(localStorage.getItem('galeria'))||[]; l.unshift({url:u,legenda:leg}); localStorage.setItem('galeria',JSON.stringify(l)); alert('Salvo!'); e.target.reset(); });
+    lerImagem(arq, u=>{ const l = JSON.parse(localStorage.getItem('galeria'))||[]; l.unshift({id: Date.now(), url:u,legenda:leg}); localStorage.setItem('galeria',JSON.stringify(l)); alert('Salvo!'); e.target.reset(); });
 });
 </script>
 </body>

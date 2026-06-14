@@ -29,6 +29,8 @@
         .secao-oculta { display: none; }
         .banner-gradiente { background: linear-gradient(90deg, rgba(0,71,171,0.85), rgba(0,46,110,0.7)); }
         .logo { height: 42px; width: auto; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+        .video-container iframe, .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
     </style>
 </head>
 <body class="bg-gray-50 text-texto">
@@ -44,7 +46,6 @@
             </div>
         </div>
 
-        <!-- Menu Desktop -->
         <nav class="hidden md:flex gap-4">
             <a href="#inicio" onclick="mostrarSecao('inicio')" class="font-medium hover:text-principal transition">Início</a>
             <a href="#noticias" onclick="mostrarSecao('noticias')" class="font-medium hover:text-principal transition">Notícias</a>
@@ -55,13 +56,11 @@
             <a href="admin.html" class="botao text-sm">Admin</a>
         </nav>
 
-        <!-- Botão Menu Mobile -->
         <button id="menuBtn" class="md:hidden text-2xl text-principal">
             <i class="fa fa-bars"></i>
         </button>
     </div>
 
-    <!-- Menu Mobile -->
     <div id="menuMobile" class="hidden bg-branco border-t md:hidden">
         <div class="container mx-auto px-4 py-3 flex flex-col gap-2">
             <a href="#inicio" onclick="mostrarSecao('inicio'); fecharMenuMobile()" class="py-2 border-b hover:text-principal">Início</a>
@@ -93,7 +92,15 @@
     </div>
 
     <div class="container mx-auto px-4 mt-8">
-        <!-- Horários dos Cultos -->
+        <!-- Seção de Vídeos na Página Inicial -->
+        <div class="mb-12">
+            <h3 class="text-xl font-bold text-principal mb-4">Vídeos e Mensagens</h3>
+            <div id="listaVideosInicio" class="grid md:grid-cols-2 gap-6">
+                <!-- Vídeos carregados do painel -->
+            </div>
+        </div>
+
+        <!-- Horários -->
         <div id="horarios" class="bg-branco p-6 rounded-lg sombra mb-8">
             <h3 class="text-xl font-bold text-principal mb-4">Nossos Horários</h3>
             <div class="grid md:grid-cols-2 gap-4">
@@ -109,18 +116,14 @@
         </div>
 
         <div class="grid md:grid-cols-3 gap-6">
-            <!-- Próximos Eventos -->
             <div class="md:col-span-2">
                 <h3 class="text-xl font-bold text-principal mb-4">Próximos Eventos</h3>
-                <div id="eventosInicio" class="grid sm:grid-cols-2 gap-4">
-                    <!-- Eventos carregados do painel -->
-                </div>
+                <div id="eventosInicio" class="grid sm:grid-cols-2 gap-4"></div>
                 <div class="mt-4">
                     <a href="#eventos" onclick="mostrarSecao('eventos')" class="text-principal font-medium hover:underline">Ver todos os eventos →</a>
                 </div>
             </div>
 
-            <!-- Menu Rápido / Redes Sociais -->
             <div>
                 <h3 class="text-xl font-bold text-principal mb-4">Acompanhe-nos</h3>
                 <div class="bg-branco rounded-lg sombra p-5 space-y-4">
@@ -233,20 +236,35 @@ function fecharMenuMobile() {
     document.getElementById('menuMobile').classList.add('hidden');
 }
 
-// Trocar seções
 function mostrarSecao(idSecao) {
     document.querySelectorAll('section').forEach(sec => sec.classList.add('secao-oculta'));
     document.getElementById(idSecao).classList.remove('secao-oculta');
     window.scrollTo(0, 0);
 }
 
-// Carregar dados
+// Carregar todos os dados
 function carregarTudo() {
     const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
     const eventos = JSON.parse(localStorage.getItem('eventos')) || [];
     const celulas = JSON.parse(localStorage.getItem('celulas')) || [];
     const galeria = JSON.parse(localStorage.getItem('galeria')) || [];
+    const videos = JSON.parse(localStorage.getItem('videos')) || [];
 
+    // Carregar vídeos na página inicial
+    document.getElementById('listaVideosInicio').innerHTML = videos.length ?
+        videos.slice(0, 2).map(v => `
+            <div class="bg-branco rounded-lg sombra p-4">
+                <h4 class="font-semibold text-principal mb-3">${v.titulo}</h4>
+                <div class="video-container rounded overflow-hidden">
+                    ${v.tipo === 'youtube' 
+                        ? `<iframe src="https://www.youtube.com/embed/${extrairIdYouTube(v.url)}" allowfullscreen></iframe>`
+                        : `<video src="${v.arquivo}" controls></video>`
+                    }
+                </div>
+            </div>
+        `).join('') : '<p class="col-span-full text-center text-gray-500 py-6">Nenhum vídeo cadastrado ainda.</p>';
+
+    // Carregar eventos
     document.getElementById('eventosInicio').innerHTML = eventos.length ?
         eventos.slice(0, 4).map(e => `
             <div class="bg-branco rounded-lg sombra overflow-hidden">
@@ -256,8 +274,7 @@ function carregarTudo() {
                     <p class="text-sm text-gray-600"><i class="fa fa-calendar mr-1"></i> ${e.data} às ${e.hora}</p>
                 </div>
             </div>
-        `).join('') :
-        '<p class="col-span-full text-center text-gray-500 py-6">Nenhum evento cadastrado ainda.</p>';
+        `).join('') : '<p class="col-span-full text-center text-gray-500 py-6">Nenhum evento cadastrado ainda.</p>';
 
     document.getElementById('listaNoticias').innerHTML = noticias.length ? noticias.map(n => `
         <div class="bg-branco rounded-lg sombra overflow-hidden">
@@ -300,6 +317,12 @@ function carregarTudo() {
     `).join('') : '<p class="col-span-full text-center text-gray-500 py-10">Nenhuma foto cadastrada.</p>';
 }
 
+function extrairIdYouTube(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+}
+
 function buscarCelula() {
     const termo = document.getElementById('buscaBairro').value.trim().toLowerCase();
     const celulas = JSON.parse(localStorage.getItem('celulas')) || [];
@@ -330,9 +353,21 @@ function buscarCelula() {
     resultado.classList.remove('hidden');
 }
 
+// Salvar mensagem no sistema para o admin ver
 document.getElementById('formContato').addEventListener('submit', e => {
     e.preventDefault();
-    alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
+    const mensagem = {
+        id: Date.now(),
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        texto: document.getElementById('mensagem').value,
+        data: new Date().toLocaleString('pt-BR')
+    };
+    const mensagens = JSON.parse(localStorage.getItem('mensagensRecebidas')) || [];
+    mensagens.unshift(mensagem);
+    localStorage.setItem('mensagensRecebidas', JSON.stringify(mensagens));
+    alert('Mensagem enviada com sucesso! Obrigado por entrar em contato.');
     e.target.reset();
 });
 
