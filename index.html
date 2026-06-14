@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paz Church Belterra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        principal: '#0047AB',
+                        escuro: '#002E6E',
+                        claro: '#F0F5FF',
+                        branco: '#FFFFFF',
+                        texto: '#222222'
+                    },
+                    fontFamily: { sans: ['Segoe UI', 'Roboto', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        .sombra { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        .botao { @apply bg-principal hover:bg-escuro text-branco px-5 py-2 rounded transition font-medium; }
+        .botao-secundario { @apply bg-branco text-principal border border-principal hover:bg-claro px-5 py-2 rounded transition font-medium; }
+        .secao-oculta { display: none; }
+        .banner-gradiente { background: linear-gradient(90deg, rgba(0,71,171,0.85), rgba(0,46,110,0.7)); }
+        .logo { height: 42px; width: auto; }
+    </style>
+</head>
+<body class="bg-gray-50 text-texto">
+
+<!-- Cabeçalho / Menu -->
+<header class="bg-branco sombra sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="logo.png" alt="Paz Church Belterra" class="logo">
+            <div>
+                <h1 class="text-xl font-bold text-principal">PAZ CHURCH</h1>
+                <p class="text-xs text-gray-500">Belterra - PA</p>
+            </div>
+        </div>
+
+        <!-- Menu Desktop -->
+        <nav class="hidden md:flex gap-4">
+            <a href="#inicio" onclick="mostrarSecao('inicio')" class="font-medium hover:text-principal transition">Início</a>
+            <a href="#noticias" onclick="mostrarSecao('noticias')" class="font-medium hover:text-principal transition">Notícias</a>
+            <a href="#eventos" onclick="mostrarSecao('eventos')" class="font-medium hover:text-principal transition">Eventos</a>
+            <a href="#celulas" onclick="mostrarSecao('celulas')" class="font-medium hover:text-principal transition">Células</a>
+            <a href="#galeria" onclick="mostrarSecao('galeria')" class="font-medium hover:text-principal transition">Galeria</a>
+            <a href="#contato" onclick="mostrarSecao('contato')" class="font-medium hover:text-principal transition">Contato</a>
+            <a href="admin.html" class="botao text-sm">Admin</a>
+        </nav>
+
+        <!-- Botão Menu Mobile -->
+        <button id="menuBtn" class="md:hidden text-2xl text-principal">
+            <i class="fa fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Menu Mobile -->
+    <div id="menuMobile" class="hidden bg-branco border-t md:hidden">
+        <div class="container mx-auto px-4 py-3 flex flex-col gap-2">
+            <a href="#inicio" onclick="mostrarSecao('inicio'); fecharMenuMobile()" class="py-2 border-b hover:text-principal">Início</a>
+            <a href="#noticias" onclick="mostrarSecao('noticias'); fecharMenuMobile()" class="py-2 border-b hover:text-principal">Notícias</a>
+            <a href="#eventos" onclick="mostrarSecao('eventos'); fecharMenuMobile()" class="py-2 border-b hover:text-principal">Eventos</a>
+            <a href="#celulas" onclick="mostrarSecao('celulas'); fecharMenuMobile()" class="py-2 border-b hover:text-principal">Células</a>
+            <a href="#galeria" onclick="mostrarSecao('galeria'); fecharMenuMobile()" class="py-2 border-b hover:text-principal">Galeria</a>
+            <a href="#contato" onclick="mostrarSecao('contato'); fecharMenuMobile()" class="py-2 border-b hover:text-principal">Contato</a>
+            <a href="admin.html" class="botao w-full text-center mt-2">Painel Admin</a>
+        </div>
+    </div>
+</header>
+
+<!-- Tela Início -->
+<section id="inicio" class="pb-12">
+    <!-- Banner Principal -->
+    <div class="relative h-[320px] md:h-[400px] w-full overflow-hidden">
+        <div class="banner-gradiente absolute inset-0 z-10"></div>
+        <img src="capa.png" alt="Paz Church Belterra" class="w-full h-full object-cover">
+        <div class="absolute inset-0 z-20 container mx-auto px-4 flex flex-col justify-center text-branco">
+            <p class="text-sm opacity-90 mb-2">BEM-VINDO À</p>
+            <h2 class="text-2xl md:text-4xl font-bold mb-4">Paz Church Belterra</h2>
+            <p class="max-w-xl mb-6">Um lugar de fé, comunhão e paz. Venha adorar conosco e fazer parte da nossa família em Belterra-PA.</p>
+            <div class="flex gap-3 flex-wrap">
+                <a href="#eventos" onclick="mostrarSecao('eventos')" class="botao">Ver Eventos</a>
+                <a href="#contato" onclick="mostrarSecao('contato')" class="botao-secundario bg-transparent border-branco text-branco hover:bg-branco hover:text-principal">Como Chegar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 mt-8">
+        <!-- Horários dos Cultos -->
+        <div id="horarios" class="bg-branco p-6 rounded-lg sombra mb-8">
+            <h3 class="text-xl font-bold text-principal mb-4">Nossos Horários</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 bg-claro rounded border-l-4 border-principal">
+                    <h4 class="font-semibold text-lg">Cultos de Celebração</h4>
+                    <p class="text-gray-700">Domingo: 07h00 | 17h00 | 19h00</p>
+                </div>
+                <div class="p-4 bg-claro rounded border-l-4 border-principal">
+                    <h4 class="font-semibold text-lg">TADEL</h4>
+                    <p class="text-gray-700">Terça-feira: 19h30</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Próximos Eventos -->
+            <div class="md:col-span-2">
+                <h3 class="text-xl font-bold text-principal mb-4">Próximos Eventos</h3>
+                <div id="eventosInicio" class="grid sm:grid-cols-2 gap-4">
+                    <!-- Eventos carregados do painel -->
+                </div>
+                <div class="mt-4">
+                    <a href="#eventos" onclick="mostrarSecao('eventos')" class="text-principal font-medium hover:underline">Ver todos os eventos →</a>
+                </div>
+            </div>
+
+            <!-- Menu Rápido / Redes Sociais -->
+            <div>
+                <h3 class="text-xl font-bold text-principal mb-4">Acompanhe-nos</h3>
+                <div class="bg-branco rounded-lg sombra p-5 space-y-4">
+                    <a href="https://www.instagram.com/pazchurchbelterra?igsh=enE1cm5sNDJwOXQz" target="_blank" class="flex items-center gap-3 p-2 hover:bg-claro rounded transition">
+                        <i class="fa-brands fa-instagram text-xl text-principal"></i>
+                        <span>@pazchurchbelterra</span>
+                    </a>
+                    <a href="https://youtube.com/@pazchurchbelterra2589?si=IayYGpX-ZZBOw6jQ" target="_blank" class="flex items-center gap-3 p-2 hover:bg-claro rounded transition">
+                        <i class="fa-brands fa-youtube text-xl text-principal"></i>
+                        <span>@pazchurchbelterra2589</span>
+                    </a>
+                    <a href="#celulas" onclick="mostrarSecao('celulas')" class="flex items-center gap-3 p-2 hover:bg-claro rounded transition">
+                        <i class="fa fa-heart text-xl text-principal"></i>
+                        <span>Encontre uma Célula</span>
+                    </a>
+                    <a href="#galeria" onclick="mostrarSecao('galeria')" class="flex items-center gap-3 p-2 hover:bg-claro rounded transition">
+                        <i class="fa fa-images text-xl text-principal"></i>
+                        <span>Galeria de Fotos</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seções Ocultas -->
+<section id="noticias" class="secao-oculta py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-principal mb-6">Últimas Notícias</h2>
+        <div id="listaNoticias" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+</section>
+
+<section id="eventos" class="secao-oculta py-12 bg-branco">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-principal mb-6">Todos os Eventos</h2>
+        <div id="listaEventos" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+</section>
+
+<section id="celulas" class="secao-oculta py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-principal mb-6">Encontre uma Célula</h2>
+        <div class="bg-branco p-5 rounded-lg sombra mb-8 max-w-xl mx-auto">
+            <h3 class="text-lg font-semibold mb-3">Digite o nome do seu bairro:</h3>
+            <div class="flex gap-2">
+                <input type="text" id="buscaBairro" placeholder="Ex: Centro, Vila Nova, etc" class="flex-1 border rounded p-2" required>
+                <button onclick="buscarCelula()" class="botao">Buscar</button>
+            </div>
+            <div id="resultadoBusca" class="mt-4 p-3 rounded hidden"></div>
+        </div>
+        <div id="listaCelulas" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+</section>
+
+<section id="galeria" class="secao-oculta py-12 bg-branco">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-principal mb-6">Galeria de Fotos</h2>
+        <div id="listaGaleria" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+    </div>
+</section>
+
+<section id="contato" class="secao-oculta py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl md:text-3xl font-bold text-principal mb-6">Localização e Contato</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-branco p-6 rounded-lg sombra">
+                <h3 class="text-lg font-semibold text-principal mb-4">Endereço</h3>
+                <p class="mb-3"><i class="fa fa-map-marker-alt text-principal mr-2"></i> Estrada UM, S/N</p>
+                <p class="mb-3"><i class="fa fa-map text-principal mr-2"></i> Belterra - PA</p>
+                <p class="mb-3"><i class="fa fa-envelope text-principal mr-2"></i> CEP: 68143-000</p>
+                <p class="mb-4"><i class="fa fa-clock text-principal mr-2"></i> Veja nossos horários acima</p>
+
+                <h4 class="font-semibold mt-6 mb-3">Redes Sociais</h4>
+                <div class="flex gap-4 text-2xl text-principal">
+                    <a href="https://www.instagram.com/pazchurchbelterra?igsh=enE1cm5sNDJwOXQz" target="_blank" class="hover:text-escuro"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://youtube.com/@pazchurchbelterra2589?si=IayYGpX-ZZBOw6jQ" target="_blank" class="hover:text-escuro"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+            <form id="formContato" class="bg-branco p-6 rounded-lg sombra">
+                <h3 class="text-lg font-semibold text-principal mb-4">Envie sua Mensagem</h3>
+                <div class="space-y-3">
+                    <input type="text" id="nome" placeholder="Seu nome" class="w-full border rounded p-2" required>
+                    <input type="email" id="email" placeholder="Seu e-mail" class="w-full border rounded p-2" required>
+                    <input type="tel" id="telefone" placeholder="Seu telefone" class="w-full border rounded p-2">
+                    <textarea id="mensagem" rows="4" placeholder="Escreva sua mensagem..." class="w-full border rounded p-2" required></textarea>
+                    <button type="submit" class="botao w-full">Enviar Mensagem</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Rodapé -->
+<footer class="bg-principal text-branco py-8">
+    <div class="container mx-auto px-4 text-center">
+        <img src="logo.png" alt="Paz Church Belterra" class="h-12 w-auto mx-auto mb-3 bg-branco p-1 rounded">
+        <p class="font-semibold">Paz Church Belterra</p>
+        <p>Estrada UM, S/N • Belterra - PA • CEP: 68143-000</p>
+        <p class="text-sm opacity-80 mt-2">&copy; 2026 - Todos os direitos reservados</p>
+    </div>
+</footer>
+
+<script>
+// Menu Mobile
+document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('menuMobile').classList.toggle('hidden');
+});
+function fecharMenuMobile() {
+    document.getElementById('menuMobile').classList.add('hidden');
+}
+
+// Trocar seções
+function mostrarSecao(idSecao) {
+    document.querySelectorAll('section').forEach(sec => sec.classList.add('secao-oculta'));
+    document.getElementById(idSecao).classList.remove('secao-oculta');
+    window.scrollTo(0, 0);
+}
+
+// Carregar dados
+function carregarTudo() {
+    const noticias = JSON.parse(localStorage.getItem('noticias')) || [];
+    const eventos = JSON.parse(localStorage.getItem('eventos')) || [];
+    const celulas = JSON.parse(localStorage.getItem('celulas')) || [];
+    const galeria = JSON.parse(localStorage.getItem('galeria')) || [];
+
+    document.getElementById('eventosInicio').innerHTML = eventos.length ?
+        eventos.slice(0, 4).map(e => `
+            <div class="bg-branco rounded-lg sombra overflow-hidden">
+                ${e.imagem ? `<img src="${e.imagem}" alt="${e.nome}" class="w-full h-36 object-cover">` : `<div class="h-36 bg-claro flex items-center justify-center text-principal">Sem imagem</div>`}
+                <div class="p-4">
+                    <h4 class="font-semibold text-principal">${e.nome}</h4>
+                    <p class="text-sm text-gray-600"><i class="fa fa-calendar mr-1"></i> ${e.data} às ${e.hora}</p>
+                </div>
+            </div>
+        `).join('') :
+        '<p class="col-span-full text-center text-gray-500 py-6">Nenhum evento cadastrado ainda.</p>';
+
+    document.getElementById('listaNoticias').innerHTML = noticias.length ? noticias.map(n => `
+        <div class="bg-branco rounded-lg sombra overflow-hidden">
+            ${n.imagem ? `<img src="${n.imagem}" alt="${n.titulo}" class="w-full h-40 object-cover">` : `<div class="h-40 bg-claro flex items-center justify-center text-principal">Sem imagem</div>`}
+            <div class="p-4">
+                <h3 class="font-bold text-lg text-principal">${n.titulo}</h3>
+                <p class="text-xs text-gray-500 mb-2">${n.data}</p>
+                <p class="text-gray-700">${n.conteudo.substring(0, 120)}...</p>
+            </div>
+        </div>
+    `).join('') : '<p class="col-span-full text-center text-gray-500 py-10">Nenhuma notícia cadastrada.</p>';
+
+    document.getElementById('listaEventos').innerHTML = eventos.length ? eventos.map(e => `
+        <div class="bg-branco rounded-lg sombra overflow-hidden">
+            ${e.imagem ? `<img src="${e.imagem}" alt="${e.nome}" class="w-full h-44 object-cover">` : `<div class="h-44 bg-claro flex items-center justify-center text-principal">Sem imagem</div>`}
+            <div class="p-4">
+                <h3 class="font-bold text-lg text-principal">${e.nome}</h3>
+                <p class="text-sm mb-1"><i class="fa fa-calendar mr-2"></i> ${e.data} às ${e.hora}</p>
+                <p class="text-sm mb-2"><i class="fa fa-map-marker mr-2"></i> Belterra - PA</p>
+                <p class="text-gray-700">${e.descricao}</p>
+            </div>
+        </div>
+    `).join('') : '<p class="col-span-full text-center text-gray-500 py-10">Nenhum evento cadastrado.</p>';
+
+    document.getElementById('listaCelulas').innerHTML = celulas.length ? celulas.map(c => `
+        <div class="bg-branco p-5 rounded-lg sombra">
+            <h4 class="font-bold text-lg text-principal">${c.nome}</h4>
+            <p><strong>Bairro:</strong> ${c.bairro}</p>
+            <p><strong>Endereço:</strong> ${c.endereco}</p>
+            <p><strong>Responsável:</strong> ${c.responsavel}</p>
+            <p><strong>Dia:</strong> ${c.dia} às ${c.horario}</p>
+            <p><strong>Contato:</strong> ${c.contato}</p>
+        </div>
+    `).join('') : '<p class="col-span-full text-center text-gray-500 py-10">Nenhuma célula cadastrada.</p>';
+
+    document.getElementById('listaGaleria').innerHTML = galeria.length ? galeria.map(img => `
+        <div class="overflow-hidden rounded-lg sombra hover:scale-105 transition">
+            <img src="${img.url}" alt="${img.legenda}" class="w-full h-40 object-cover">
+        </div>
+    `).join('') : '<p class="col-span-full text-center text-gray-500 py-10">Nenhuma foto cadastrada.</p>';
+}
+
+function buscarCelula() {
+    const termo = document.getElementById('buscaBairro').value.trim().toLowerCase();
+    const celulas = JSON.parse(localStorage.getItem('celulas')) || [];
+    const resultado = document.getElementById('resultadoBusca');
+
+    if (!termo) {
+        resultado.className = 'mt-4 p-3 rounded bg-yellow-100 text-yellow-800';
+        resultado.textContent = 'Digite o nome do bairro para pesquisar.';
+        resultado.classList.remove('hidden');
+        return;
+    }
+
+    const encontradas = celulas.filter(c => c.bairro.toLowerCase().includes(termo));
+    if (encontradas.length > 0) {
+        resultado.className = 'mt-4 p-3 rounded bg-green-100 text-green-800';
+        resultado.innerHTML = `<strong>${encontradas.length} célula(s) encontrada(s):</strong><br><br>` +
+            encontradas.map(c => `
+                <div class="mb-2 pb-2 border-b border-green-200">
+                    <strong>${c.nome}</strong><br>
+                    Bairro: ${c.bairro} | ${c.dia} às ${c.horario}<br>
+                    Responsável: ${c.responsavel} | Contato: ${c.contato}
+                </div>
+            `).join('');
+    } else {
+        resultado.className = 'mt-4 p-3 rounded bg-red-100 text-red-800';
+        resultado.textContent = 'Nenhuma célula encontrada para esse bairro.';
+    }
+    resultado.classList.remove('hidden');
+}
+
+document.getElementById('formContato').addEventListener('submit', e => {
+    e.preventDefault();
+    alert('Mensagem enviada com sucesso! Em breve entraremos em contato.');
+    e.target.reset();
+});
+
+window.onload = carregarTudo;
+</script>
+</body>
+</html>
