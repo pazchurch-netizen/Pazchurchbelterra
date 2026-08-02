@@ -1,0 +1,67 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000000;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #111111;
+    color: #FFD700;
+    padding: 40px 0;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 20px;
+}
+
+.logo img {
+    max-width: 150px;
+}
+
+.servicos {
+    padding: 60px 0;
+}
+
+.servicos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 30px;
+}
+
+.servico-item {
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.servico-item img {
+    max-width: 60px;
+    margin-bottom: 20px;
+}
+
+.contato {
+    background-color: #111111;
+    padding: 60px 0;
+    color: #FFD700;
+}
+
+footer {
+    background-color: #000000;
+    color: #888888;
+    padding: 20px 0;
+    text-align: center;
+}
