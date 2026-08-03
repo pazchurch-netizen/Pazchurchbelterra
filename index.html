@@ -3,110 +3,257 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Card Moderno</title>
+  <title>Cartão Digital - Freire Despachante</title>
   <style>
-    /* Reset & Variáveis */
+    /* Reset & Variáveis de Cor */
     :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0284c7;
-      --radius: 16px;
+      --bg-color: #0d0d0f;
+      --card-bg: #141418;
+      --gold-primary: #d4af37;
+      --gold-light: #f3e5ab;
+      --green-whatsapp: #10b981;
+      --text-muted: #9ca3af;
+      --item-bg: #1a1a22;
+      --inner-card-bg: #1e1d1b;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      display: grid;
-      place-items: center;
+      background-color: var(--bg-color);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
       min-height: 100vh;
-      padding: 1.5rem;
+      padding: 1rem;
     }
 
-    /* Container Card */
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius);
-      padding: 2rem;
-      max-width: 400px;
+    /* Container Principal */
+    .container {
       width: 100%;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      max-width: 420px;
+      background-color: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 2rem 1.25rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
     }
 
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.4);
+    /* --- CABEÇALHO --- */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
     }
 
-    .badge {
-      display: inline-block;
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--primary);
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
+    .motto {
+      color: var(--gold-primary);
+      font-size: 0.8rem;
+      font-style: italic;
+      letter-spacing: 2px;
       margin-bottom: 1rem;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
-    .title {
-      font-size: 1.5rem;
+    .logo-img {
+      width: 130px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    .brand-title {
+      color: var(--gold-primary);
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+
+    .brand-subtitle {
+      color: #ffffff;
+      font-size: 1.1rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
-      line-height: 1.2;
+      letter-spacing: 3px;
+      margin-bottom: 1.25rem;
     }
 
-    .description {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: 1.5rem;
-    }
-
-    /* Botão */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 0.75rem 1.5rem;
-      background-color: var(--primary);
-      color: #000;
+    .pill-badge {
+      display: inline-block;
+      border: 1px solid var(--gold-primary);
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+      font-size: 0.7rem;
+      color: var(--gold-light);
+      letter-spacing: 1.5px;
       font-weight: 600;
-      text-decoration: none;
-      border-radius: calc(var(--radius) / 2);
-      transition: background-color 0.2s ease;
     }
 
-    .btn:hover {
-      background-color: var(--primary-hover);
-      color: #fff;
+    /* --- TÍTULOS DE SEÇÃO --- */
+    .section-title {
+      display: flex;
+      align-items: center;
+      color: var(--gold-primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(212, 175, 55, 0.3);
+      margin-left: 0.75rem;
+    }
+
+    /* --- BOTÕES DE ATENDIMENTO --- */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-card {
+      display: block;
+      text-decoration: none;
+      padding: 0.85rem 1.25rem;
+      border-radius: 12px;
+      background-color: var(--item-bg);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .contact-card.whatsapp {
+      border: 1px solid var(--green-whatsapp);
+    }
+
+    .contact-card.email {
+      border: 1px solid var(--gold-primary);
+    }
+
+    .contact-number {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .contact-card.email .contact-number {
+      color: var(--gold-light);
+    }
+
+    .contact-sub {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.2rem;
+      display: block;
+    }
+
+    /* --- CAIXA DE SERVIÇOS --- */
+    .services-box {
+      background-color: var(--inner-card-bg);
+      border-radius: 14px;
+      padding: 1.25rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .services-title {
+      color: var(--gold-light);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+
+    .service-item {
+      background-color: var(--item-bg);
+      padding: 0.75rem 0.5rem;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.03);
     }
   </style>
 </head>
 <body>
 
-  <article class="card">
-    <span class="badge">Novo</span>
-    <h2 class="title">Interface Moderna</h2>
-    <p class="description">
-      Um layout limpo, com paleta dark mode, tipografia legível e animações sutis.
-    </p>
-    <a href="#" class="btn">Explorar Agora</a>
-  </article>
+  <main class="container">
+    
+    <!-- Cabeçalho / Logo -->
+    <header class="header">
+      <p class="motto">DEUS É FIEL</p>
+      <!-- Substitua o link abaixo pela imagem da sua águia/logo -->
+      <img src="https://cdna.artstation.com/p/assets/images/images/052/981/928/large/graphic-designer-eagle-logo.jpg?1661158914" alt="Águia Dourada" class="logo-img">
+      <h1 class="brand-title">FREIRE</h1>
+      <h2 class="brand-subtitle">DESPACHANTE</h2>
+      <div class="pill-badge">CONFIANÇA • SERIEDADE • AGILIDADE</div>
+    </header>
+
+    <!-- Atendimento Rápido -->
+    <section>
+      <div class="section-title">Atendimento Rápido</div>
+      <div class="contact-list">
+        
+        <a href="https://wa.me/5593991040581" target="_blank" class="contact-card whatsapp">
+          <span class="contact-number">(93) 99104-0581</span>
+          <span class="contact-sub">Clique para chamar no WhatsApp</span>
+        </a>
+
+        <a href="https://wa.me/5592991166062" target="_blank" class="contact-card whatsapp">
+          <span class="contact-number">(92) 99116-6062</span>
+          <span class="contact-sub">Clique para chamar no WhatsApp</span>
+        </a>
+
+        <a href="mailto:freiregilvan07@gmail.com" class="contact-card email">
+          <span class="contact-number">freiregilvan07@gmail.com</span>
+          <span class="contact-sub">Clique para enviar um e-mail</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Nossos Serviços -->
+    <section>
+      <div class="section-title">Nossos Serviços</div>
+      
+      <div class="services-box">
+        <h3 class="services-title">Documentação Detran & ANTT</h3>
+        
+        <div class="services-grid">
+          <div class="service-item">Emplacamento</div>
+          <div class="service-item">IPVA</div>
+          <div class="service-item">Licenciamento</div>
+          <div class="service-item">Transferência</div>
+          <div class="service-item">Renovação CNH</div>
+          <div class="service-item">Alteração Dados</div>
+          <div class="service-item">2ª Via DUT</div>
+          <div class="service-item">Inclusão Cat.</div>
+          <div class="service-item">1ª Habilitação</div>
+          <div class="service-item">ANTT</div>
+          <div class="service-item">Multas</div>
+          <div class="service-item">Restr. Tributária</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
 </body>
 </html>
